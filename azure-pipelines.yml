@@ -73,6 +73,9 @@ stages:
               
               # Create a web app
               New-AzWebApp -Name $webappname -AppServicePlan $webappname -ResourceGroupName $resourceGroup -Location $location
+              
+              "##vso[task.setvariable variable=resourceGroup;]$resourceGroup"
+              "##vso[task.setvariable variable=webappname;]$webappname"
             azurePowerShellVersion: 'LatestVersion'
         - task: AzurePowerShell@5
           inputs:
