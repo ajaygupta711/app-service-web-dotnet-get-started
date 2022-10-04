@@ -79,7 +79,7 @@ stages:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             ScriptType: 'InlineScript'
             Inline: |
-              $app = Get-AzWebApp -ResourceGroupName $resourceGroup -Name $webappname
+              $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
               Publish-AzWebApp -WebApp $app -ArchivePath '$(Build.ArtifactStagingDirectory)\aspnet-get-started.zip' -AsJob
             azurePowerShellVersion: 'LatestVersion'
         
