@@ -13,6 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  webappName:
 
 stages:
   - stage: build
@@ -45,5 +46,31 @@ stages:
     jobs:
       - job: deploytoappService
         displayName: 'Deploying to app service'
-       
+        steps:
+        - task: AzurePowerShell@5
+          inputs:
+            azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
+            ScriptType: 'InlineScript'
+            Inline: |
+              <# This sample script creates a web app in App Service with its related resources, and 
+              then deploys your web app code from a public GitHub repository (without continuous deployment)
+              #>
+              
+              #$gitrepo = "https://github.com/ajaygupta711/app-service-web-dotnet-get-started.git"
+              $webappname = "ajaywebapp$(Get-Random)"
+              $location = "Central India"
+              $resourceGroup = "ajaysrggroup"
+              
+              #create resource group
+              New-AzResourceGroup -Name $resourceGroup  -Location $location
+              
+              
+              # Create an App Service plan in Free tier.
+              New-AzAppServicePlan -Name  $webappname -ResourceGroupName $resourceGroup -Location $location -Tier Free
+              
+              
+              # Create a web app
+              New-AzWebApp -Name $webappname -AppServicePlan $webappname -ResourceGroupName $resourceGroup -Location $location
+            azurePowerShellVersion: 'LatestVersion'
+        
         
