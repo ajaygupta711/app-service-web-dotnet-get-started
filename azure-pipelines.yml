@@ -91,7 +91,7 @@ stages:
               write-host my webappname '$(webappname)'
               write-host $(System.DefaultWorkingDirectory)
               $mypipe = $(System.DefaultWorkingDirectory)
-              $mypipe.Get-Childitem
+              $mypipe.Get-ChildItem
               $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
               Publish-AzWebApp -WebApp $app -ArchivePath '$(System.DefaultWorkingDirectory)/drop/aspnet-get-started.zip'
             azurePowerShellVersion: 'LatestVersion'
