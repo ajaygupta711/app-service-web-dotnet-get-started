@@ -89,6 +89,8 @@ stages:
             Inline: |
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
+              $pipe = $(Build.ArtifactStagingDirectory)
+              $pipe | Get-ChildItem
               $app = Get-AzWebApp -ResourceGroupName $(resourceGroup) -Name $(webappname)
               Publish-AzWebApp -WebApp $app -ArchivePath '$(Build.ArtifactStagingDirectory)\aspnet-get-started.zip' -Force
             azurePowerShellVersion: 'LatestVersion'
