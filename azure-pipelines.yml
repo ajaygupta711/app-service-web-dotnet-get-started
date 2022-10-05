@@ -85,6 +85,6 @@ stages:
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
               $app = Get-AzWebApp -ResourceGroupName $(resourceGroup) -Name $(webappname)
-              Publish-AzWebApp -WebApp $app -ArchivePath $(Get-Item .\aspnet-get-started.zip).FullName -Force
+              Publish-AzWebApp -WebApp $app -ArchivePath '$(Build.ArtifactStagingDirectory\aspnet-get-started.zip)' -Force
             azurePowerShellVersion: 'LatestVersion'
         
