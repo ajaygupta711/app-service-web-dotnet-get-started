@@ -77,6 +77,11 @@ stages:
               "##vso[task.setvariable variable=resourceGroup;]$resourceGroup"
               "##vso[task.setvariable variable=webappname;]$webappname"
             azurePowerShellVersion: 'LatestVersion'
+        - script: pwd
+          displayName: 'what directory are we in?'
+
+        - script: ls -la
+          displayName: 'what files are in this folder?'
         - task: AzurePowerShell@5
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
