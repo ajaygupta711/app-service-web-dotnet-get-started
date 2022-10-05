@@ -89,7 +89,10 @@ stages:
             Inline: |
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
+              write-host $(System.DefaultWorkingDirectory)
+              $mypipe = $(System.DefaultWorkingDirectory)
+              $mypipe.Get-Childitem
               $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
-              Publish-AzWebApp -WebApp $app -ArchivePath '$(Build.ArtifactStagingDirectory)/drop/aspnet-get-started.zip'
+              Publish-AzWebApp -WebApp $app -ArchivePath '$(System.DefaultWorkingDirectory)/drop/aspnet-get-started.zip'
             azurePowerShellVersion: 'LatestVersion'
         
