@@ -39,26 +39,17 @@ stages:
           inputs:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
-        - task: PublishPipelineArtifact@1
+        - task: PublishBuildArtifacts@1
           inputs:
-            targetPath: '$(Pipeline.Workspace)'
-            artifact: 'drop'
-            publishLocation: 'pipeline'
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
 
   - stage: deploy_to_cloud
     jobs:
       - job: deploytoappService
         displayName: 'Deploying to app service'
         steps:
-        - task: DownloadBuildArtifacts@1
-          inputs:
-            buildType: 'specific'
-            project: '736a1e2a-04c2-4dba-b184-980bebda151e'
-            pipeline: '27'
-            buildVersionToDownload: 'latest'
-            downloadType: 'single'
-            artifactName: 'drop'
-            downloadPath: '$(System.ArtifactsDirectory)'
         - task: AzurePowerShell@5
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
@@ -87,7 +78,15 @@ stages:
               "##vso[task.setvariable variable=resourceGroup;]$resourceGroup"
               "##vso[task.setvariable variable=webappname;]$webappname"
             azurePowerShellVersion: 'LatestVersion'
+        - task: AzureWebApp@1
+          inputs:
+            azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
+            appType: 'webApp'
+            appName: '$webappname'
+            package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+            deploymentMethod: 'auto'
         - task: AzurePowerShell@5
+          enabled: false
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             ScriptType: 'InlineScript'
@@ -95,6 +94,6 @@ stages:
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
               $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
-              Publish-AzWebApp -WebApp $app -ArchivePath '$(Pipeline.Workspace)/drop/**/*.zip' -Force
+              Publish-AzWebApp -WebApp $app -ArchivePath '$(Pipeline.Workspace)/**/*.zip' -Force
             azurePowerShellVersion: 'LatestVersion'
         
