@@ -84,8 +84,6 @@ stages:
             Inline: |
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
-              $myloc = $(System.ArtifactsDirectory)
-              Get-ChildItem -path $myloc
               $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
               Publish-AzWebApp -WebApp $app -ArchivePath '$(System.ArtifactsDirectory)/**/*.zip'
             azurePowerShellVersion: 'LatestVersion'
