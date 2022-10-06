@@ -39,7 +39,13 @@ stages:
           inputs:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: '$(Pipeline.Workspace)'
+            artifact: 'drop'
+            publishLocation: 'pipeline'
         - task: PublishBuildArtifacts@1
+          enabled: false
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
@@ -50,6 +56,11 @@ stages:
       - job: deploytoappService
         displayName: 'Deploying to app service'
         steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            buildType: 'current'
+            artifactName: 'drop'
+            targetPath: '$(Pipeline.Workspace)/drop'
         - task: AzurePowerShell@5
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
@@ -85,7 +96,7 @@ stages:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             appType: 'webApp'
             appName: '$(webappname)'
-            package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+            package: '$(Pipeline.Workspace)/drop'
             deploymentMethod: 'auto'
         - task: AzurePowerShell@5
           enabled: false
