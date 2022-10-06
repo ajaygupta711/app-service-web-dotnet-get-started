@@ -77,11 +77,6 @@ stages:
               "##vso[task.setvariable variable=resourceGroup;]$resourceGroup"
               "##vso[task.setvariable variable=webappname;]$webappname"
             azurePowerShellVersion: 'LatestVersion'
-        - script: pwd
-          displayName: 'what directory are we in?'
-
-        - script: ls -la
-          displayName: 'what files are in this folder?'
         - task: AzurePowerShell@5
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
@@ -89,10 +84,8 @@ stages:
             Inline: |
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
-              write-host $(System.DefaultWorkingDirectory)
-              $mypipe = $(System.DefaultWorkingDirectory)
-              $mypipe.Get-ChildItem
+              write-host $(System.ArtifactsDirectory)
               $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
-              Publish-AzWebApp -WebApp $app -ArchivePath '$(System.DefaultWorkingDirectory)/drop/aspnet-get-started.zip'
+              Publish-AzWebApp -WebApp $app -ArchivePath '$(System.ArtifactsDirectory)/**/*.zip'
             azurePowerShellVersion: 'LatestVersion'
         
