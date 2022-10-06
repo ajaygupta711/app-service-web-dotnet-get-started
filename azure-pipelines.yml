@@ -49,6 +49,14 @@ stages:
       - job: deploytoappService
         displayName: 'Deploying to app service'
         steps:
+        - task: DownloadBuildArtifacts@1
+          inputs:
+            buildType: 'specific'
+            project: '736a1e2a-04c2-4dba-b184-980bebda151e'
+            pipeline: '27'
+            buildVersionToDownload: 'latest'
+            downloadType: 'specific'
+            downloadPath: '$(System.ArtifactsDirectory)'
         - task: AzurePowerShell@5
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
