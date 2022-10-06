@@ -77,12 +77,14 @@ stages:
               
               "##vso[task.setvariable variable=resourceGroup;]$resourceGroup"
               "##vso[task.setvariable variable=webappname;]$webappname"
+              write-host my resource $(resourceGroup)
+              write-host my webappname '$(webappname)'
             azurePowerShellVersion: 'LatestVersion'
         - task: AzureWebApp@1
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             appType: 'webApp'
-            appName: '$webappname'
+            appName: '$(webappname)'
             package: '$(System.DefaultWorkingDirectory)/**/*.zip'
             deploymentMethod: 'auto'
         - task: AzurePowerShell@5
