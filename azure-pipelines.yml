@@ -41,7 +41,7 @@ stages:
             configuration: '$(buildConfiguration)'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(build.artifactStagingDirectory)'
+            targetPath: '$(Pipeline.Workspace)'
             artifact: 'drop'
             publishLocation: 'pipeline'
         - task: PublishBuildArtifacts@1
