@@ -84,6 +84,7 @@ stages:
               
               "##vso[task.setvariable variable=resourceGroup;]$resourceGroup"
               "##vso[task.setvariable variable=webappname;]$webappname"
+              Start-Sleep -Seconds 180
             azurePowerShellVersion: 'LatestVersion'
         - task: AzurePowerShell@5
           inputs:
@@ -93,6 +94,6 @@ stages:
               write-host my resource $(resourceGroup)
               write-host my webappname '$(webappname)'
               $app = Get-AzWebApp -ResourceGroupName '$(resourceGroup)' -Name '$(webappname)'
-              Publish-AzWebApp -WebApp $app -ArchivePath '$(System.ArtifactsDirectory)/**/*.zip'
+              Publish-AzWebApp -WebApp $app -ArchivePath '$(System.ArtifactsDirectory)/**/*.zip' -Force
             azurePowerShellVersion: 'LatestVersion'
         
