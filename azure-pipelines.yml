@@ -39,11 +39,12 @@ stages:
           inputs:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
-        - task: PublishBuildArtifacts@1
+        - task: PublishPipelineArtifact@1
           inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
+            targetPath: '$(Pipeline.Workspace)'
+            artifact: 'drop'
+            publishLocation: 'pipeline'
+
   - stage: deploy_to_cloud
     jobs:
       - job: deploytoappService
@@ -55,7 +56,8 @@ stages:
             project: '736a1e2a-04c2-4dba-b184-980bebda151e'
             pipeline: '27'
             buildVersionToDownload: 'latest'
-            downloadType: 'specific'
+            downloadType: 'single'
+            artifactName: 'drop'
             downloadPath: '$(System.ArtifactsDirectory)'
         - task: AzurePowerShell@5
           inputs:
