@@ -31,7 +31,7 @@ stages:
         - task: VSBuild@1
           inputs:
             solution: '$(solution)'
-            msbuildArgs: '/p:DeployOnBuild=false /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+            msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
         
@@ -96,9 +96,8 @@ stages:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             appType: 'webApp'
             appName: '$(webappname)'
-            package: '$(Pipeline.Workspace)/drop/**/*.zip'
-            deploymentMethod: 'zipDeploy'
-            
+            package: '$(Pipeline.Workspace)/drop'
+            deploymentMethod: 'auto'
         - task: AzurePowerShell@5
           enabled: false
           inputs:
