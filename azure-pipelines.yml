@@ -96,7 +96,7 @@ stages:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             appType: 'webApp'
             appName: '$(webappname)'
-            package: '$(Pipeline.Workspace)/drop'
+            package: '$(Pipeline.Workspace)/drop/**/*.zip'
             deploymentMethod: 'auto'
         - task: AzurePowerShell@5
           enabled: false
