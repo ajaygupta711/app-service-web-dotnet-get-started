@@ -101,7 +101,7 @@ stages:
             WebAppName: '$(webappname)'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         - task: AzurePowerShell@5
-          enabled: false
+          enabled: true
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             ScriptType: 'InlineScript'
