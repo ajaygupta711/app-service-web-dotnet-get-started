@@ -40,16 +40,11 @@ stages:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
         - task: PublishPipelineArtifact@1
+          enabled: false
           inputs:
             targetPath: '$(Pipeline.Workspace)'
             artifact: 'drop'
             publishLocation: 'pipeline'
-        - task: PublishBuildArtifacts@1
-          enabled: false
-          inputs:
-            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-            ArtifactName: 'drop'
-            publishLocation: 'Container'
 
   - stage: deploy_to_cloud
     jobs:
