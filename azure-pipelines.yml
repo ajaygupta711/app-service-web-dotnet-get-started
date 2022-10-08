@@ -101,6 +101,7 @@ stages:
             WebAppName: '$(webappname)'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         - task: AzurePowerShell@5
+          enabled: false
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             ScriptType: 'InlineScript'
@@ -108,9 +109,12 @@ stages:
               write-host my resource $(resourceGroup)
               write-host my webappname $(webappname)
               write-host package path $(Build.Repository.LocalPath)
-              write-host package path $(Build.SourcesDirectory)
+              $repol = $(Build.SourcesDirectory)
               write-host package path $(Pipeline.Workspace)
+              cd $repol\aspnet-get-started\obj\Release\Package\PackageTmp
+              dir
+              Compress-Archive -Path * -DestinationPath aspnet-get-started.zip
               $app = Get-AzWebApp -ResourceGroupName $env:resourceGroup -Name $env:webappname
-              Publish-AzWebApp -WebApp $app -ArchivePath (Get-Item $(Pipeline.Workspace)\s\aspnet-get-started.zip).FullName -Force
+              Publish-AzWebApp -WebApp $app -ArchivePath (Get-Item .\aspnet-get-started.zip).FullName -Force
             azurePowerShellVersion: 'LatestVersion'
         
