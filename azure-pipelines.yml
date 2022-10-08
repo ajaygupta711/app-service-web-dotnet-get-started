@@ -86,12 +86,19 @@ stages:
               write-host my webappname '$(webappname)'
             azurePowerShellVersion: 'LatestVersion'
         - task: AzureWebApp@1
+          enabled: false
           inputs:
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
             appType: 'webApp'
             appName: '$(webappname)'
             package: '$(Pipeline.Workspace)/**/*.zip'
-            
+        - task: AzureRmWebAppDeployment@4
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
+            appType: 'webApp'
+            WebAppName: '$(webappname)'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         - task: AzurePowerShell@5
           enabled: false
           inputs:
