@@ -40,7 +40,6 @@ stages:
             platform: '$(buildPlatform)'
             configuration: '$(buildConfiguration)'
         - task: PublishPipelineArtifact@1
-          enabled: false
           inputs:
             targetPath: '$(Pipeline.Workspace)'
             artifact: 'drop'
