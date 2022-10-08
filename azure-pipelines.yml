@@ -108,6 +108,6 @@ stages:
               write-host my resource $(resourceGroup)
               write-host my webappname $(webappname)
               $app = Get-AzWebApp -ResourceGroupName $(resourceGroup) -Name $(webappname)
-              Publish-AzWebApp -WebApp $app -ArchivePath $(Pipeline.Workspace)/**/*.zip -Force
+              Publish-AzWebApp -ResourceGroupName $resourceGroup -WebApp $app -ArchivePath $(Pipeline.Workspace)/**/*.zip -Force
             azurePowerShellVersion: 'LatestVersion'
         
