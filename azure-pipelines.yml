@@ -93,7 +93,7 @@ stages:
             appName: '$(webappname)'
             package: '$(Pipeline.Workspace)/**/*.zip'
         - task: AzureRmWebAppDeployment@4
-          enabled: true
+          enabled: false
           inputs:
             ConnectionType: 'AzureRM'
             azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
@@ -117,4 +117,21 @@ stages:
               $app = Get-AzWebApp -ResourceGroupName $env:resourceGroup -Name $env:webappname
               Publish-AzWebApp -WebApp $app -ArchivePath (Get-Item .\aspnet-get-started.zip).FullName -Force
             azurePowerShellVersion: 'LatestVersion'
-        
+        - task: AzurePowerShell@5
+          enabled: true
+          inputs:
+            azureSubscription: 'Azure Personal(3772de55-f369-4548-afb2-3811c07a435b)'
+            ScriptType: 'InlineScript'
+            Inline: |
+              write-host my resource $(resourceGroup)
+              write-host my webappname $(webappname)
+              write-host package path $(Build.Repository.LocalPath)
+              $gitrepo="https://github.com/ajaygupta711/app-service-web-dotnet-get-started.git"
+              # Configure GitHub deployment from your GitHub repo and deploy once.
+              $PropertiesObject = @{
+                  repoUrl = "$gitrepo";
+                  branch = "master";
+                  isManualIntegration = "true";
+              }
+              Set-AzResource -Properties $PropertiesObject -ResourceGroupName $(resourceGroup) -ResourceType Microsoft.Web/sites/sourcecontrols -ResourceName $(webappname)/web -ApiVersion 2015-08-01 -Force
+            azurePowerShellVersion: 'LatestVersion'
